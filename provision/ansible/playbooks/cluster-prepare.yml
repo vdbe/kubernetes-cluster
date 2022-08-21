@@ -40,8 +40,13 @@
             state: present
             key: "{{ item }}"
           loop:
-            - https://rpmfusion.org/keys?action=AttachFile&do=get&target=RPM-GPG-KEY-rpmfusion-free-fedora-2020
-            - https://rpmfusion.org/keys?action=AttachFile&do=get&target=RPM-GPG-KEY-rpmfusion-nonfree-fedora-2020
+            - "https://rpmfusion.org/keys?action=AttachFile&do=get&target=RPM-GPG-KEY-rpmfusion-free-el-{{ ansible_distribution_major_version }}"
+            - "https://rpmfusion.org/keys?action=AttachFile&do=get&target=RPM-GPG-KEY-rpmfusion-nonfree-el-{{ ansible_distribution_major_version }}"
+        - name: Packages | Install epel-release
+          ansible.builtin.dnf:
+            name: epel-release
+            state: present
+            update_cache: true
         - name: Packages | Install required packages
           ansible.builtin.dnf:
             name: "{{ packages | default([]) }}"
