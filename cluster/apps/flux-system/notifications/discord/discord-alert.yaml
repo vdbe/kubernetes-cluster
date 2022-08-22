@@ -32,3 +32,4 @@ spec:
   exclusionList:
     - "waiting.*socket"
     - "\\ANamespace/flux-system configured\\n?\\z"
+    - "\\ADependencies do not meet ready condition, retrying in .*\\n?\\z"
