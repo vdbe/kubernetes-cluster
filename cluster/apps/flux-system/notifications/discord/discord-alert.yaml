@@ -8,7 +8,7 @@ spec:
   providerRef:
     name: discord
   eventSeverity: info
-  eventSources: # supported values: "Bucket", "GitRepository", "Kustomization", "HelmRelease", "HelmChart", "HelmRepository", "ImageRepository", "ImagePolicy", "ImageUpdateAutomation", "OCIRepository"
+  eventSources:
     - kind: Bucket
       name: "*"
     - kind: GitRepository
@@ -29,4 +29,4 @@ spec:
       name: '*'
     - kind: OCIRepository
       name: '*'
-  suspend: true
+# supported values: "Bucket", "GitRepository", "Kustomization", "HelmRelease", "HelmChart", "HelmRepository", "ImageRepository", "ImagePolicy", "ImageUpdateAutomation", "OCIRepository"
