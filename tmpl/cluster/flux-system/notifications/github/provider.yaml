@@ -1,0 +1,11 @@
+---
+apiVersion: notification.toolkit.fluxcd.io/v1beta1
+kind: Provider
+metadata:
+  name: github
+  namespace: flux-system
+spec:
+  type: github
+  address: ${BOOTSTRAP_GIT_REPOSITORY}
+  secretRef:
+    name: github-notification-token

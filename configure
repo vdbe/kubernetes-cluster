@@ -88,6 +88,7 @@ main() {
         generate_ansible_host_secrets
         setup_github_webhook
         setup_notification_discord
+        setup_notification_github
         success
     fi
 }
@@ -349,6 +350,34 @@ setup_notification_discord() {
         if [[ -f "${NOTIFICATION_KUSTOMIZATION}" ]] \
             && [[ $(yq eval --no-doc 'contains({"resources": ["discord"]})' "${NOTIFICATION_KUSTOMIZATION}") == true ]]; then
             yq --inplace '.resources -= [ "discord" ]' "${NOTIFICATION_KUSTOMIZATION}"
+        fi
+    fi
+}
+
+setup_notification_github() {
+    GITHUB_TOKEN="${BOOTSTRAP_NOTIFICATION_GITHUB_TOKEN:-ignored}"
+    NOTIFICATION_KUSTOMIZATION="${PROJECT_DIR}/cluster/apps/flux-system/notifications/kustomization.yaml"
+
+    if [[ "${DISORD_WEBHOOK}" != "ignored" ]]; then
+        setup_notifications
+
+        mkdir -p "${PROJECT_DIR}/cluster/apps/flux-system/notifications/github"
+
+        envsubst < "${PROJECT_DIR}/tmpl/cluster/flux-system/notifications/github/secret.sops.yaml" \
+            > "${PROJECT_DIR}/cluster/apps/flux-system/notifications/github/secret.sops.yaml"
+
+        sops --encrypt --in-place "${PROJECT_DIR}/cluster/apps/flux-system/notifications/github/secret.sops.yaml"
+
+        envsubst < "${PROJECT_DIR}/tmpl/cluster/flux-system/notifications/github/provider.yaml" \
+            > "${PROJECT_DIR}/cluster/apps/flux-system/notifications/github/provider.yaml"
+
+        if [[ $(yq eval --no-doc 'contains({"resources": ["github"]})' "${NOTIFICATION_KUSTOMIZATION}") == false ]]; then
+            yq --inplace '.resources += [ "github" ]' "${NOTIFICATION_KUSTOMIZATION}"
+        fi
+    else
+        if [[ -f "${NOTIFICATION_KUSTOMIZATION}" ]] \
+            && [[ $(yq eval --no-doc 'contains({"resources": ["github"]})' "${NOTIFICATION_KUSTOMIZATION}") == true ]]; then
+            yq --inplace '.resources -= [ "github" ]' "${NOTIFICATION_KUSTOMIZATION}"
         fi
     fi
 }
