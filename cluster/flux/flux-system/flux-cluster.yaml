@@ -9,7 +9,7 @@ spec:
   ref:
     branch: main
   #url: https://github.com/vdbe/kubernetes-cluster
-  url: git@github.com:vdbe/kubernetes-cluster
+  url: ssh://git@github.com:vdbe/kubernetes-cluster
   secretRef:
     name: github-deploy-key
 ---
