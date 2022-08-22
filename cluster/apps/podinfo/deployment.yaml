@@ -74,3 +74,8 @@ spec:
             requests:
               cpu: 100m
               memory: 64Mi
+      healthChecks:
+        - apiVersion: apps/v1
+          kind: Deployment
+          name: podinfo
+          namespace: podinfo
