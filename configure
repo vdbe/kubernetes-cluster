@@ -87,6 +87,7 @@ main() {
         generate_ansible_hosts
         generate_ansible_host_secrets
         setup_github_webhook
+        setup_notification_discord
         success
     fi
 }
@@ -312,6 +313,42 @@ setup_github_webhook() {
 
         if [[ $(yq eval --no-doc 'contains({"resources": ["webhooks"]})' "${PROJECT_DIR}/cluster/apps/flux-system/kustomization.yaml") == false ]]; then
             yq --inplace '.resources += [ "webhooks" ]' "${PROJECT_DIR}/cluster/apps/flux-system/kustomization.yaml"
+        fi
+    fi
+}
+
+setup_notifications() {
+    mkdir -p "${PROJECT_DIR}/cluster/apps/flux-system/notifications"
+    if [[ ! -f "${PROJECT_DIR}/cluster/apps/flux-system/notifications/kustomization.yaml" ]]; then
+        cp "${PROJECT_DIR}/tmpl/cluster/flux-system/notifications/kustomization.yaml" "${PROJECT_DIR}/cluster/apps/flux-system/notifications"
+    fi
+
+    if [[ $(yq eval --no-doc 'contains({"resources": ["notifications"]})' "${PROJECT_DIR}/cluster/apps/flux-system/kustomization.yaml") == false ]]; then
+        yq --inplace '.resources += [ "notifications" ]' "${PROJECT_DIR}/cluster/apps/flux-system/kustomization.yaml"
+    fi
+}
+
+setup_notification_discord() {
+    DISORD_WEBHOOK="${BOOTSTRAP_NOTIFICATION_DISCORD_WEBHOOK:-ignored}"
+    NOTIFICATION_KUSTOMIZATION="${PROJECT_DIR}/cluster/apps/flux-system/notifications/kustomization.yaml"
+
+    if [[ "${DISORD_WEBHOOK}" != "ignored" ]]; then
+        setup_notifications
+
+        mkdir -p "${PROJECT_DIR}/cluster/apps/flux-system/notifications/discord"
+
+        envsubst < "${PROJECT_DIR}/tmpl/cluster/flux-system/notifications/discord/secret.sops.yaml" \
+            > "${PROJECT_DIR}/cluster/apps/flux-system/notifications/discord/secret.sops.yaml"
+
+        sops --encrypt --in-place "${PROJECT_DIR}/cluster/apps/flux-system/notifications/discord/secret.sops.yaml"
+
+        if [[ $(yq eval --no-doc 'contains({"resources": ["discord"]})' "${NOTIFICATION_KUSTOMIZATION}") == false ]]; then
+            yq --inplace '.resources += [ "discord" ]' "${NOTIFICATION_KUSTOMIZATION}"
+        fi
+    else
+        if [[ -f "${NOTIFICATION_KUSTOMIZATION}" ]] \
+            && [[ $(yq eval --no-doc 'contains({"resources": ["discord"]})' "${NOTIFICATION_KUSTOMIZATION}") == true ]]; then
+            yq --inplace '.resources -= [ "discord" ]' "${NOTIFICATION_KUSTOMIZATION}"
         fi
     fi
 }
