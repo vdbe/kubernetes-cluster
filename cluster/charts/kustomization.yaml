@@ -9,6 +9,7 @@ resources:
   - ingress-nginx.yaml
   - jetstack.yaml
   - k8s-gateway.yaml
+  - k8s-at-home-charts.yaml
   - metallb.yaml
   - metrics-server.yaml
   - rook-ceph-charts.yaml
