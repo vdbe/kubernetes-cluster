@@ -6,8 +6,8 @@ resources:
   - helm-release.yaml
   - certificate.yaml
 configMapGenerator:
-  - name: cloudflare-proxied-networks
+  - name: proxied-networks
     files:
-      - cloudflare-proxied-networks.txt
+      - proxied-networks.txt
 generatorOptions:
   disableNameSuffixHash: true
