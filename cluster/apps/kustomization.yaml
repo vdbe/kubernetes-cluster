@@ -5,4 +5,5 @@ resources:
   - flux-system
   - kube-system
   - networking
+  - rook-ceph
   - system-upgrade
