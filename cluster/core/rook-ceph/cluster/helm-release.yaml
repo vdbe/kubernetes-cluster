@@ -141,9 +141,9 @@ spec:
             - effect: NoExecute
               operator: Exists
 
-    cephBlockPoolsVolumeSnapshotClass:
-      enabled: true
-      name: csi-rbdplugin-snapclass
+    #cephBlockPoolsVolumeSnapshotClass:
+    #  enabled: true
+    #  name: csi-rbdplugin-snapclass
 
     cephBlockPools:
       - name: ceph-blockpool
