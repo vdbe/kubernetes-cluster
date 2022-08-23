@@ -43,6 +43,9 @@ spec:
           hajimari.io/enable: "true"
           hajimari.io/icon: content-save
           hajimari.io/appName: "rook-ceph"
+          nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+          nginx.ingress.kubernetes.io/server-snippet: |
+            proxy_ssl_verify off;
 
         host:
           name: &host "rook.${SECRET_DOMAIN}"
