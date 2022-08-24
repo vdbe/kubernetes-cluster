@@ -38,7 +38,7 @@ spec:
       dashboard:
         ingressClassName: "nginx"
         annotations:
-          cert-manager.io/cluster-issuer: "letsencrypt-production"
+          cert-manager.io/cluster-issuer: "letsencrypt-staging"
           external-dns/is-public: "false"
           hajimari.io/enable: "true"
           hajimari.io/icon: content-save
