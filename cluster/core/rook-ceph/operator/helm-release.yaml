@@ -39,8 +39,8 @@ spec:
       enabled: true
 
     csi:
-      pluginTolerations:
-        - effect: "NoExecute"
-          operator: "Exists"
-        - effect: "NoSchedule"
-          operator: "Exists"
+      #pluginTolerations:
+      #  - effect: "NoExecute"
+      #    operator: "Exists"
+      #  - effect: "NoSchedule"
+      #    operator: "Exists"
