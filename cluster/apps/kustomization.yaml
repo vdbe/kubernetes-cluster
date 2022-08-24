@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
   - cert-manger
   - default
+  - home
   - flux-system
   - kube-system
   - networking

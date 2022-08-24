@@ -29,35 +29,32 @@ spec:
 
   values:
     monitoring:
-      enabled: true
+      enabled: false
 
     toolbox:
       enabled: true
 
-    ingress:
-      dashboard:
-        ingressClassName: "nginx"
-        annotations:
-          cert-manager.io/cluster-issuer: "letsencrypt-production"
-          external-dns/is-public: "false"
-          hajimari.io/enable: "true"
-          hajimari.io/icon: content-save
-          hajimari.io/appName: "rook-ceph"
-          nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
-          nginx.ingress.kubernetes.io/server-snippet: |
-            proxy_ssl_verify off;
+    #ingress:
+    #  dashboard:
+    #    ingressClassName: "nginx"
+    #    annotations:
+    #      cert-manager.io/cluster-issuer: "letsencrypt-production"
+    #      external-dns/is-public: "false"
+    #      hajimari.io/enable: "true"
+    #      hajimari.io/icon: content-save
+    #      hajimari.io/appName: "rook-ceph"
 
-        host:
-          name: &host "rook.${SECRET_DOMAIN}"
-          path: "/"
-        tls:
-          - secretName: rook-ceph-tls
-            hosts:
-              - *host
+    #    host:
+    #      name: &host "rook.${SECRET_DOMAIN}"
+    #      path: "/"
+    #    tls:
+    #      - secretName: tls.rook-ceph
+    #        hosts:
+    #          - *host
 
     cephClusterSpec:
       crashCollector:
-        disable: false
+        disable: true
 
       healthCheck:
         daemonHealth:
@@ -102,13 +99,13 @@ spec:
         nodes:
           - name: "k3s-node-01"
             devices:
-              - name: "xvdc"
+              - name: "xvdb"
           - name: "k3s-node-02"
             devices:
-              - name: "xvdc"
+              - name: "xvdb"
           - name: "k3s-node-03"
             devices:
-              - name: "xvdc"
+              - name: "xvdb"
 
       resources:
         mgr:
@@ -147,6 +144,8 @@ spec:
     #cephBlockPoolsVolumeSnapshotClass:
     #  enabled: true
     #  name: csi-rbdplugin-snapclass
+    #  #annotations:
+    #  #  k10.kasten.io/is-snapshot-class: "true"
 
     cephBlockPools:
       - name: ceph-blockpool
