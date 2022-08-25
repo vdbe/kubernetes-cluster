@@ -107,13 +107,13 @@ spec:
         nodes:
           - name: "k3s-node-01"
             devices:
-              - name: "/dev/xvdc"
+              - name: "xvdb"
           - name: "k3s-node-02"
             devices:
-              - name: "/dev/xvdc"
+              - name: "xvdb"
           - name: "k3s-node-03"
             devices:
-              - name: "/dev/xvdc"
+              - name: "xvdb"
 
     cephBlockPoolsVolumeSnapshotClass:
       enabled: false
