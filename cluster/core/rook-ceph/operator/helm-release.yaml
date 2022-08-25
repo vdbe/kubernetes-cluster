@@ -35,11 +35,11 @@ spec:
     crds:
       enabled: false
 
-    csi:
-      kubeletDirPath: /var/lib/kubelet
-      enableCSIHostNetwork: true
-      pluginTolerations:
-        - effect: "NoExecute"
-          operator: "Exists"
-        - effect: "NoSchedule"
-          operator: "Exists"
+    #csi:
+    #  kubeletDirPath: /var/lib/kubelet
+    #  enableCSIHostNetwork: true
+    #  pluginTolerations:
+    #    - effect: "NoExecute"
+    #      operator: "Exists"
+    #    - effect: "NoSchedule"
+    #      operator: "Exists"
