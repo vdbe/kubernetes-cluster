@@ -35,9 +35,6 @@ spec:
     crds:
       enabled: true
 
-    #monitoring:
-    #  enabled: true
-
     csi:
       kubeletDirPath: /var/lib/kubelet
       enableCSIHostNetwork: true
