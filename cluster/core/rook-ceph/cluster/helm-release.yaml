@@ -29,17 +29,7 @@ spec:
   values:
     # Installs a debugging toolbox deployment
     toolbox:
-      enabled: false
-      image: rook/ceph:VERSION
-      tolerations: []
-      affinity: {}
-      resources:
-        limits:
-          cpu: "500m"
-          memory: "1Gi"
-        requests:
-          cpu: "100m"
-          memory: "128Mi"
+      enabled: true
       # Set the priority class for the toolbox if desired
       # priorityClassName: class
 
@@ -62,7 +52,7 @@ spec:
         annotations: {}
 
     # If true, create & use PSP resources. Set this to the same value as the rook-ceph chart.
-    pspEnable: true
+    #pspEnable: true
 
     # imagePullSecrets option allow to pull docker images from private docker registry. Option will be passed to all service accounts.
     # imagePullSecrets:
@@ -78,11 +68,11 @@ spec:
         # versions running within the cluster. See tags available at https://hub.docker.com/r/ceph/ceph/tags/.
         # If you want to be more precise, you can always use a timestamp tag such quay.io/ceph/ceph:v15.2.11-20200419
         # This tag might not contain a new Ceph version, just security fixes from the underlying operating system, which will reduce vulnerabilities
-        image: quay.io/ceph/ceph:v17.2.3
+        #image: quay.io/ceph/ceph:v17.2.3
         # Whether to allow unsupported versions of Ceph. Currently `pacific` and `quincy` are supported.
         # Future versions such as `reef` (v18) would require this to be set to `true`.
         # Do not set to true in production.
-        allowUnsupported: false
+        #allowUnsupported: false
 
       # The path on the host where configuration files will be persisted. Must be specified.
       # Important: if you reinstall the cluster, make sure you delete this directory from each host or else the mons will fail to start on the new cluster.
@@ -373,13 +363,13 @@ spec:
         daemonHealth:
           mon:
             disabled: false
-            interval: 45s
+            interval: 90s
           osd:
             disabled: false
-            interval: 60s
+            interval: 120s
           status:
             disabled: false
-            interval: 60s
+            interval: 120s
         # Change pod liveness probe, it works for all mon, mgr, and osd pods.
         livenessProbe:
           mon:
