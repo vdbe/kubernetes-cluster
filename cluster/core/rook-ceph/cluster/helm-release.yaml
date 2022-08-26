@@ -99,21 +99,23 @@ spec:
     #    enabled: true
     #    urlPrefix: /
 
-    #  storage:
-    #    useAllNodes: false
-    #    useAllDevices: false
-    #    config:
-    #      osdsPerDevice: "1"
-    #    nodes:
-    #      - name: "k3s-node-01"
-    #        devices:
-    #          - name: "xvdb"
-    #      - name: "k3s-node-02"
-    #        devices:
-    #          - name: "xvdb"
-    #      - name: "k3s-node-03"
-    #        devices:
-    #          - name: "xvdb"
+      storage:
+        useAllNodes: false
+        useAllDevices: false
+        config:
+          osdsPerDevice: "1"
+        nodes:
+          - name: "k3s-node-01"
+            devices:
+              - name: "xvdb"
+          - name: "k3s-node-02"
+            devices:
+              - name: "xvdb"
+          - name: "k3s-node-03"
+            devices:
+              - name: "xvdb"
+        onlyApplyOSDPlacement: false
+
 
     #  placement:
     #    osd:
@@ -154,8 +156,8 @@ spec:
     #   cleanup:
 
 
-    #cephBlockPoolsVolumeSnapshotClass:
-    #  enabled: false
+    cephBlockPoolsVolumeSnapshotClass:
+      enabled: false
 
     cephBlockPools:
       - name: ceph-blockpool
