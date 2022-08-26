@@ -37,6 +37,8 @@ spec:
   values:
     env:
       TZ: "${TIMEZONE}"
+      BASE_URL: "send.${SECRET_DOMAIN}"
+      DETECT_BASE_URL: true
 
     persistence:
       uploads:
@@ -54,10 +56,10 @@ spec:
           hajimari.io/enable: "true"
           hajimari.io/icon: "send"
         hosts:
-          - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
+          - host: &host "{{ .release.name }}.${secret_domain}"
             paths:
               - path: /
-                pathType: Prefix
+                pathtype: prefix
         tls:
           - hosts:
               - *host
