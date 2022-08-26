@@ -60,7 +60,13 @@ spec:
             paths:
               - path: /
                 pathtype: prefix
+
+          - host: &suprise "suprise.${secret_domain}"
+            paths:
+              - path: /
+                pathtype: prefix
         tls:
           - hosts:
               - *host
+              - *suprise
             secretName: "send-tls"
