@@ -34,23 +34,24 @@ spec:
     toolbox:
       enabled: true
 
-    #ingress:
-    #  dashboard:
-    #    ingressClassName: "nginx"
-    #    annotations:
-    #      cert-manager.io/cluster-issuer: "letsencrypt-production"
-    #      external-dns/is-public: "false"
-    #      hajimari.io/enable: "true"
-    #      hajimari.io/icon: content-save
-    #      hajimari.io/appName: "rook-ceph"
+    ingress:
+      dashboard:
+        ingressClassName: "nginx"
+        annotations:
+          cert-manager.io/cluster-issuer: "letsencrypt-production"
+          external-dns/is-public: "false"
+          hajimari.io/enable: "true"
+          hajimari.io/icon: content-save
+          hajimari.io/appName: "rook-ceph"
+          nginx.ingress.kubernetes.io/whitelist-source-range: "10.0.0.0/8,172.16.0.0/12,192.168.0.0/16"
 
-    #    host:
-    #      name: &host "rook.${SECRET_DOMAIN}"
-    #      path: "/"
-    #    tls:
-    #      - secretName: tls.rook-ceph
-    #        hosts:
-    #          - *host
+        host:
+          name: &host "rook.${SECRET_DOMAIN}"
+          path: "/"
+        tls:
+          - secretName: tls.rook-ceph
+            hosts:
+              - *host
 
     cephClusterSpec:
       crashCollector:
