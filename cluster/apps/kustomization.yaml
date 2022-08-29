@@ -7,5 +7,6 @@ resources:
   - home
   - flux-system
   - kube-system
+  - monitoring
   - networking
   - system-upgrade
