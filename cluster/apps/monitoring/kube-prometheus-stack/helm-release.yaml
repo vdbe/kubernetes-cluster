@@ -33,7 +33,7 @@ spec:
       namespace: rook-ceph
 
   values:
-    fullnameOverride: prometheus-stack
+    fullnameOverride: prom-stack
 
     alertmanager:
       config:
@@ -135,7 +135,7 @@ spec:
 
     kubeControllerManager:
       enabled: true
-      endpoints: ${K3S_MASTERS}
+      endpoints: ['10.48.110.110']
       service:
         enabled: true
         port: 10257
@@ -147,7 +147,7 @@ spec:
 
     kubeScheduler:
       enabled: true
-      endpoints: ${K3S_MASTERS}
+      endpoints: ['10.48.110.110']
       service:
         enabled: true
         port: 10259
