@@ -4,4 +4,4 @@ kind: Kustomization
 resources:
   - namespace.yaml
   #- grafana
-  #- kube-prometheus-stack
+  - kube-prometheus-stack
