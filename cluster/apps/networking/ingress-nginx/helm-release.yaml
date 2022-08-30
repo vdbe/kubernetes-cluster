@@ -55,7 +55,12 @@ spec:
         ssl-protocols: "TLSv1.3 TLSv1.2"
         use-forwarded-headers: "true"
       metrics:
-        enabled: false
+        enabled: true
+        serviceMonitor:
+          enabled: true
+          namespace: networking
+          namespaceSelector:
+            any: true
       extraArgs:
         default-ssl-certificate: "networking/${SECRET_DOMAIN/./-}-tls"
       podAnnotations:
