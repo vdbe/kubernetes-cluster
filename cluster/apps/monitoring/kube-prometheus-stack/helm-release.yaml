@@ -159,11 +159,11 @@ spec:
 
     kubeProxy:
       enabled: true
-      endpoints: ${K3S_MASTERS}
+      endpoints: ['10.48.110.110']
 
     kubeEtcd:
       enabled: true
-      endpoints: ${K3S_MASTERS}
+      endpoints: ['10.48.110.110']
       service:
         enabled: true
         port: 2381
