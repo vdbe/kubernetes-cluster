@@ -5,3 +5,5 @@ resources:
   - namespace.yaml
   - webhooks
   - notifications
+  - pod-monitor.yaml
+  - prometheus-rule.yaml
