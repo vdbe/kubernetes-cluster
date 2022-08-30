@@ -84,7 +84,7 @@ spec:
         pathType: Prefix
         ingressClassName: "nginx"
         annotations:
-          cert-manager.io/cluster-issuer: "letsencrypt-staging"
+          cert-manager.io/cluster-issuer: "letsencrypt-production"
           external-dns/is-public: "false"
           hajimari.io/enable: "true"
           hajimari.io/icon: "fire-alert"
@@ -196,7 +196,7 @@ spec:
         pathType: Prefix
         ingressClassName: "nginx"
         annotations:
-          cert-manager.io/cluster-issuer: "letsencrypt-staging"
+          cert-manager.io/cluster-issuer: "letsencrypt-production"
           hajimari.io/enable: "true"
           hajimari.io/icon: "database-search-outline"
         hosts:
