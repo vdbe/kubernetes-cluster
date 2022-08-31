@@ -47,7 +47,7 @@ spec:
         securityContext:
           runAsUser: 0
         volumeMounts:
-          - name: uploads
+          - name: config
             mountPath: /config
 
     env:
@@ -60,7 +60,7 @@ spec:
 
     podSecurityContext:
       runAsGroup: 1000
-      runAsuser: 1000
+      runAsUser: 1000
 
     ingress:
       main:
