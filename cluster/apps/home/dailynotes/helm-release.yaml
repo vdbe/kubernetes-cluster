@@ -1,0 +1,84 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: dailynotes
+  namespace: home
+spec:
+  interval: 5m
+  timeout: 10m
+  chart:
+    spec:
+      # renovate: registryUrl=https://charts.truecharts.org
+      chart: dailynotes
+      version: 0.0.22
+      sourceRef:
+        kind: HelmRepository
+        name: TrueCharts
+        namespace: flux-system
+      interval: 5m
+
+  install:
+    createNamespace: true
+    timeout: 10m
+    remediation:
+      retries: 5
+
+  upgrade:
+    remediation:
+      retries: 5
+
+  dependsOn:
+    - name: ingress-nginx
+      namespace: networking
+    - name: rook-ceph
+      namespace: rook-ceph
+
+  values:
+    initContainers:
+      init-permission:
+        image: busybox
+        imagePullPolicy: IfNotPresent
+        command:
+          - sh
+          - -c
+        args:
+          - chown 1000:1000 /config;
+        securityContext:
+          runAsUser: 0
+        volumeMounts:
+          - name: uploads
+            mountPath: /config
+
+    env:
+      TZ: "${TIMEZONE}"
+
+    persistence:
+      config:
+        enabled: true
+        existingClaim: dailynotes-config-v1
+
+    podSecurityContext:
+      runAsGroup: 1000
+      runAsuser: 1000
+
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: "nginx"
+        annotations:
+          cert-manager.io/cluster-issuer: "letsencrypt-staging"
+          external-dns.alpha.kubernetes.io/target: "ingress.${SECRET_DOMAIN}"
+          external-dns/is-public: "false"
+          hajimari.io/enable: "true"
+          #hajimari.io/icon: "send"
+        hosts:
+          - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                pathtype: prefix
+        tls:
+          - hosts:
+              - *host
+              - *suprise
+            secretName: "send-tls"
