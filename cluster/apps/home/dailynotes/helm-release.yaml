@@ -67,11 +67,11 @@ spec:
         enabled: true
         ingressClassName: "nginx"
         annotations:
-          cert-manager.io/cluster-issuer: "letsencrypt-staging"
+          cert-manager.io/cluster-issuer: "letsencrypt-production"
           external-dns.alpha.kubernetes.io/target: "ingress.${SECRET_DOMAIN}"
-          external-dns/is-public: "false"
+          external-dns/is-public: "true"
           hajimari.io/enable: "true"
-          #hajimari.io/icon: "send"
+          hajimari.io/icon: "calendar-text"
         hosts:
           - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
             paths:
@@ -80,4 +80,4 @@ spec:
         tls:
           - hosts:
               - *host
-            secretName: "send-tls"
+            secretName: "dailynotes-tls"
