@@ -1,0 +1,100 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: joplin
+  namespace: home
+spec:
+  interval: 5m
+  timeout: 10m
+  chart:
+    spec:
+      # renovate: registryUrl=https://charts.truecharts.org
+      chart: joplin-server
+      version: 8.0.34
+      sourceRef:
+        kind: HelmRepository
+        name: true-charts
+        namespace: flux-system
+      interval: 5m
+
+  install:
+    createNamespace: true
+    timeout: 10m
+    remediation:
+      retries: 5
+
+  upgrade:
+    remediation:
+      retries: 5
+
+  dependsOn:
+    - name: ingress-nginx
+      namespace: networking
+    - name: rook-ceph
+      namespace: rook-ceph
+
+  values:
+    initContainers:
+      init-permission:
+        image: busybox
+        imagePullPolicy: IfNotPresent
+        command:
+          - sh
+          - -c
+        args:
+          - chown 1000:1000 /config;
+        securityContext:
+          runAsUser: 0
+        volumeMounts:
+          - name: config
+            mountPath: /config
+
+    env:
+      TZ: "${TIMEZONE}"
+      APP_BASE_URL: "https://{{ .Release.Name }}.${SECRET_DOMAIN}"
+      APP_PORT: 22300
+      DB_CLIENT: "pg"
+      POSTGRES_DATABASE: "joplin"
+      POSTGRES_USER: "joplin"
+      POSTGRES_PORT: "5432"
+      POSTGRES_PASSWORD:
+        secretKeyRef:
+          name: joplin-database-credentials
+          key: postgresql-password
+      POSTGRES_HOST:
+        secretKeyRef:
+          name: joplin-database-credentials
+          key: plainhost
+
+    persistence:
+      config:
+        enabled: true
+        existingClaim: joplin-config-v1
+
+    #podSecurityContext:
+    #  runAsGroup: 1000
+    #  runAsUser: 1000
+
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: "nginx"
+        annotations:
+          cert-manager.io/cluster-issuer: "letsencrypt-production"
+          external-dns.alpha.kubernetes.io/target: "ingress.${SECRET_DOMAIN}"
+          external-dns/is-public: "false"
+          hajimari.io/enable: "true"
+          hajimari.io/icon: "calendar-text"
+        nginx.ingress.kubernetes.io/whitelist-source-range: "10.0.0.0/8,172.16.0.0/12,192.168.0.0/16"
+        hosts:
+          - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                pathtype: prefix
+        tls:
+          - hosts:
+              - *host
+            secretName: "joplin-tls"
+    postgresql:
+      enabled: false
